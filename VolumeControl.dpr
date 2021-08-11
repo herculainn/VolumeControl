@@ -28,7 +28,7 @@ begin
     // Visual
     Application.MainFormOnTaskbar := True;
     Application.CreateForm(TVolumeControlForm, VolumeControlForm);
-  Application.Run;
+    Application.Run;
 
   end;
 

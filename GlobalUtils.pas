@@ -3,7 +3,7 @@ unit GlobalUtils;
 interface
 
 uses
-  Winapi.Windows, MMDevApi, ActiveX, pngimage ;
+  Winapi.Windows, MMDevApi, ActiveX, pngimage, Messages;
 
 
 procedure ActivateEndpointVolume;
@@ -15,7 +15,7 @@ function GetVolume: Integer;
 function GetMute: bool;
 procedure SetMute(aMute: Boolean);
 function ToggleMute: Boolean;
-
+procedure SendAppCommand(aCommand: NativeInt);
 
 var
   EndpointVolume: IAudioEndpointVolume = nil;
@@ -144,5 +144,13 @@ begin
   else SetMute(true);
   Result := GetMute;
 end;
+
+procedure SendAppCommand(aCommand: NativeInt);
+begin
+  // Not very stable?
+  // https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendmessage
+  {Winapi.Windows.}SendMessage(HWND_BROADCAST, WM_APPCOMMAND, 0, MAKELONG(0, aCommand))
+end;
+
 
 end.

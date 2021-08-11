@@ -6,7 +6,7 @@ procedure RunCommandLineFunction;
 
 implementation
 
-uses System.SysUtils, GlobalUtils;
+uses System.SysUtils, GlobalUtils, Winapi.Windows, Messages;
 
 procedure RunCommandLineFunction;
 var
@@ -43,8 +43,19 @@ begin
       else if (cParamName = 'TOGGLE_MUTE') then
         ToggleMute
 
-      ; // Add other media keys?
+      else if (cParamName = 'MEDIA_PLAY_PAUSE') then
+        SendAppCommand(APPCOMMAND_MEDIA_PLAY_PAUSE)
 
+      else if (cParamName = 'MEDIA_STOP') then
+        SendAppCommand(APPCOMMAND_MEDIA_STOP)
+
+      else if (cParamName = 'MEDIA_NEXT_TRACK') then
+        SendAppCommand(APPCOMMAND_MEDIA_NEXTTRACK)
+
+      else if (cParamName = 'MEDIA_PREV_TRACK') then
+        SendAppCommand(APPCOMMAND_MEDIA_PREVIOUSTRACK)
+
+      ; // ugly if block you got here
 
     end;
 
