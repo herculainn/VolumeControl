@@ -1,0 +1,1 @@
+%userprofile%\OneDrive\Documents\Source\Delphi\VolumeControl\Win32\Release\VolumeControl.exe run INC_VOLUME_BY=1

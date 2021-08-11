@@ -1,0 +1,1 @@
+upx -9 --crp-ms=10000 --nrv2d --compress-exports=1 --compress-icons=2 --strip-relocs=1 "..\Win32\Release\VolumeControl.exe"
