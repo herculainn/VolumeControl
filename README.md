@@ -1,13 +1,14 @@
 # VolumeControl
 Delphi Application to control system volume and media on the local machine.  
 
-When using a Remote Desktop, media keys are sent to the remote machine and do not affect the local machine. Use another utility on the local machine, such as Corsair iCue, to remap device keys to run this application. The local machine will now handle the commands.
+When using a Remote Desktop, media keys are sent to the remote machine and do not affect the local machine.  
+Via another utility on the local machine, such as Corsair iCue or AutoHotKey, we can remap device media keys to run this application instead.  
+The keys could be mapped to any relevant function using the command line parameters listed here.
 
 ## Commands
-Run the application from command line using these options:
+Run the application from command line using these parameters:
 
 ### Volume
-These commands are stable.  
 
 - VolumeControl.exe run SET_VOLUME=69
 - VolumeControl.exe run INC_VOLUME=4
@@ -18,13 +19,24 @@ These commands are stable.
 - VolumeControl.exe run UNMUTE SET_VOLUME=69
 
 ### Media
-These keys are relatively unstable!  
-They use Windows API SendMessage with HWND_BROADCAST. This can confuse Spotify sometimes...  
+They use Windows API SendMessage with HWND_BROADCAST.  
+This can confuse Spotify sometimes...  
 
 - VolumeControl.exe run MEDIA_PLAY_PAUSE
 - VolumeControl.exe run MEDIA_NEXT_TRACK
 - VolumeControl.exe run MEDIA_PREV_TRACK
 - VolumeControl.exe run MEDIA_STOP
+
+### Media Target
+This can make the media keys a little more reliable by focussing the message on specific processes.  
+
+- VolumeControl.exe run MEDIA_TARGET="Spofify.exe"
+
+### C-C-C-Combo
+Combine parameters for multiple actions:  
+
+- VolumeControl.exe run MEDIA_PLAY_PAUSE MEDIA_TARGET="Spofify.exe"
+
 
 ## /UPX
 Contains bat file to compress release build. Not required. 

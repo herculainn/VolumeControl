@@ -3,10 +3,8 @@ unit GlobalUtils;
 interface
 
 uses
-  Winapi.Windows, MMDevApi, ActiveX, pngimage, Messages;
-
-
-procedure ActivateEndpointVolume;
+  Winapi.Windows, MMDevApi, ActiveX, pngimage, Messages, System.Classes;
+             
 function IIFS(aCondition: Boolean; aTrue: String; aFalse: String): String;
 function ParseStr(cStr: string; cDelim: char; nIndex: integer): string;
 function GetResPNG(const ResID: String): TPngObject;
@@ -15,16 +13,16 @@ function GetVolume: Integer;
 function GetMute: bool;
 procedure SetMute(aMute: Boolean);
 function ToggleMute: Boolean;
-procedure SendAppCommand(aCommand: NativeInt);
-
-var
-  EndpointVolume: IAudioEndpointVolume = nil;
+procedure SendMessageWinAPI(aCommand: NativeInt; aTarget: String = '');
 
 const
-  VOL_MAX = 100;
-  VOL_MIN = 0;
+  VOL_MAX = 100; // Could be taken from device
+  VOL_MIN = 0;   // if arsed...
 
 implementation
+
+uses
+  System.SysUtils, Vcl.Forms, CtrlProcess;
 
 function IIFS(aCondition: Boolean; aTrue: String; aFalse: String): String;
 begin
@@ -68,25 +66,6 @@ begin
   except
     Result := nil;
   end;
-end;
-
-procedure ActivateEndpointVolume;
-var
-  DeviceEnumerator: IMMDeviceEnumerator;
-  DefaultDevice: IMMDevice;
-begin
-  CoCreateInstance(
-    CLASS_IMMDeviceEnumerator, nil,
-    CLSCTX_INPROC_SERVER, IID_IMMDeviceEnumerator,
-    DeviceEnumerator);
-
-  DeviceEnumerator.GetDefaultAudioEndpoint(
-    eRender, eConsole, DefaultDevice);
-
-  DefaultDevice.Activate(
-    IID_IAudioEndpointVolume,
-    CLSCTX_INPROC_SERVER, nil,
-    EndpointVolume);
 end;
 
 function GetVolume: Integer;
@@ -143,13 +122,30 @@ begin
   if (tpMuted) then SetMute(false)
   else SetMute(true);
   Result := GetMute;
-end;
+end; 
 
-procedure SendAppCommand(aCommand: NativeInt);
+procedure SendMessageWinAPI(aCommand: NativeInt; aTarget: String = '');
+var
+  lTargets: TList;
+  cPoint: Pointer;
+
 begin
-  // Not very stable?
-  // https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendmessage
-  {Winapi.Windows.}SendMessage(HWND_BROADCAST, WM_APPCOMMAND, 0, MAKELONG(0, aCommand))
+
+  if (aTarget <> '') then
+  begin
+    // TODO: Narrow down further...
+    lTargets := GetWindowHandlesByProcessName(aTarget);
+    for cPoint in lTargets do
+      SendMessage(HWND(cPoint), WM_APPCOMMAND, 0, MAKELONG(0, aCommand));
+  end
+  else
+  begin
+    // TODO: Defect - This prevents the application from exiting!
+    // This also confuses Spotify sometimes; repeats input and error when playing any tracks afterwards
+    // https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendmessage
+    SendMessage(HWND_BROADCAST, WM_APPCOMMAND, 0, MAKELONG(0, aCommand));
+  end;
+      
 end;
 
 

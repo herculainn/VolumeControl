@@ -12,11 +12,23 @@ procedure RunCommandLineFunction;
 var
   i: integer;
   cParam, cParamName, cParamValue: string;
-  VolumeLevel, OriginalVolumeLevel: Integer;
+
+  bUpdateVolume: Boolean;
+  bSendMediaKey: Boolean;
+  bChangeMute: Boolean;
+
+  VolumeLevel: Integer;
+  MuteValue: Boolean;
+  MediaKey: NativeInt;
+  MediaTarget: String;
+  pTargetProc: String;
+
 begin
   try
     VolumeLevel := GetVolume;
-    OriginalVolumeLevel := VolumeLevel;
+    MediaTarget := '';
+
+    // What do we want to do...
 
     for i := 2 to ParamCount do // skip "run"
     begin
@@ -26,44 +38,90 @@ begin
       cParamValue := ParseStr(cParam, '=', 2);
 
       if (cParamName = 'SET_VOLUME') then
+      begin
+        bUpdateVolume := True;
         VolumeLevel := StrToInt(cParamValue)
+      end
 
       else if (cParamName = 'INC_VOLUME_BY') then
+      begin
+        bUpdateVolume := True;
         VolumeLevel := VolumeLevel + StrToInt(cParamValue)
+      end
 
       else if (cParamName = 'DEC_VOLUME_BY') then
+      begin
+        bUpdateVolume := True;
         VolumeLevel := VolumeLevel - StrToInt(cParamValue)
+      end
 
       else if (cParamName = 'MUTE') then
-        SetMute(true)
+      begin
+        bChangeMute := True;
+        MuteValue := True;
+      end
 
       else if (cParamName = 'UNMUTE') then
-        SetMute(false)
+      begin
+        bChangeMute := True;
+        MuteValue := False;
+      end
 
       else if (cParamName = 'TOGGLE_MUTE') then
-        ToggleMute
+      begin
+        ToggleMute; // Just do it here
+      end
 
       else if (cParamName = 'MEDIA_PLAY_PAUSE') then
-        SendAppCommand(APPCOMMAND_MEDIA_PLAY_PAUSE)
+      begin
+        bSendMediaKey := True;
+        MediaKey := APPCOMMAND_MEDIA_PLAY_PAUSE;
+      end
 
       else if (cParamName = 'MEDIA_STOP') then
-        SendAppCommand(APPCOMMAND_MEDIA_STOP)
+      begin
+        bSendMediaKey := True;
+        MediaKey := APPCOMMAND_MEDIA_STOP;
+      end
 
       else if (cParamName = 'MEDIA_NEXT_TRACK') then
-        SendAppCommand(APPCOMMAND_MEDIA_NEXTTRACK)
+      begin
+        bSendMediaKey := True;
+        MediaKey := APPCOMMAND_MEDIA_NEXTTRACK;
+      end
 
       else if (cParamName = 'MEDIA_PREV_TRACK') then
-        SendAppCommand(APPCOMMAND_MEDIA_PREVIOUSTRACK)
+      begin
+        bSendMediaKey := True;
+        MediaKey := APPCOMMAND_MEDIA_PREVIOUSTRACK;
+      end
+
+      else if (cParamName = 'MEDIA_TARGET') then
+      begin
+        MediaTarget := cParamValue;
+      end
 
       ; // ugly if block you got here
 
     end;
 
-    if (OriginalVolumeLevel <> VolumeLevel) then
+    // Do things!
+
+    if (bUpdateVolume) then
     begin
       if (VolumeLevel < VOL_MIN) then VolumeLevel := VOL_MIN;
       if (VolumeLevel > VOL_MAX) then VolumeLevel := VOL_MAX;
       SetVolume(VolumeLevel);
+    end;
+
+    if (bChangeMute) then
+    begin
+      SetMute(MuteValue);
+    end;
+
+    if (bSendMediaKey) then
+    begin
+      SendMessageWinAPI(MediaKey, MediaTarget);
     end;
 
   except

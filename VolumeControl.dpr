@@ -5,27 +5,29 @@ program VolumeControl;
 uses
   Vcl.Forms,
   System.SysUtils,
+  System.Classes,
+  winapi.Windows,
   CommandLineImpl in 'CommandLineImpl.pas',
   GlobalUtils in 'GlobalUtils.pas',
   MainForm in 'MainForm.pas' {VolumeControlForm},
-  MMDevAPI in 'MMDevAPI.pas';
+  MMDevAPI in 'MMDevAPI.pas',
+  CtrlProcess in 'CtrlProcess.pas',
+  CtrlWindow in 'CtrlWindow.pas';
 
 {$R *.res}
 
 begin
 
-  ActivateEndpointVolume;
-
   if AnsiUpperCase(ParamStr(1)) = 'RUN' then
   begin
 
-    // Command Line
+    // CLI
     RunCommandLineFunction;
 
   end
   else begin
 
-    // Visual
+    // GUI
     Application.MainFormOnTaskbar := True;
     Application.CreateForm(TVolumeControlForm, VolumeControlForm);
     Application.Run;

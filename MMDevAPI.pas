@@ -97,6 +97,36 @@ type
     function RegisterEndpointNotificationCallback(pClient: IMMNotificationClient): Hresult; stdcall;
   end;
 
+procedure ActivateEndpointVolume;
+
+var
+  EndpointVolume: IAudioEndpointVolume = nil;
+
 implementation
+
+procedure ActivateEndpointVolume;
+var
+  DeviceEnumerator: IMMDeviceEnumerator;
+  DefaultDevice: IMMDevice;
+begin
+  CoCreateInstance(
+    CLASS_IMMDeviceEnumerator, nil,
+    CLSCTX_INPROC_SERVER, IID_IMMDeviceEnumerator,
+    DeviceEnumerator);
+
+  DeviceEnumerator.GetDefaultAudioEndpoint(
+    eRender, eConsole, DefaultDevice);
+
+  DefaultDevice.Activate(
+    IID_IAudioEndpointVolume,
+    CLSCTX_INPROC_SERVER, nil,
+    EndpointVolume);
+end;
+
+
+initialization
+
+  ActivateEndpointVolume;
+
 
 end.
