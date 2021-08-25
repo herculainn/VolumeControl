@@ -16,7 +16,6 @@ Run the application from command line using these parameters:
 - VolumeControl.exe run MUTE
 - VolumeControl.exe run UNMUTE
 - VolumeControl.exe run TOGGLEMUTE
-- VolumeControl.exe run UNMUTE SET_VOLUME=69
 
 ### Media
 They use Windows API SendMessage with HWND_BROADCAST.  
@@ -36,7 +35,7 @@ This can make the media keys a little more reliable by focussing the message on 
 Combine parameters for multiple actions:  
 
 - VolumeControl.exe run MEDIA_PLAY_PAUSE MEDIA_TARGET="Spotify.exe"
-
+- VolumeControl.exe run UNMUTE SET_VOLUME=69
 
 ## /UPX
 Contains bat file to compress release build. Not required. 
