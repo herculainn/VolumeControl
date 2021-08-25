@@ -1,1 +1,1 @@
-%userprofile%\OneDrive\Documents\Source\Delphi\VolumeControl\Win32\Release\VolumeControl.exe run MEDIA_PREV_TRACK
+%userprofile%\OneDrive\Documents\Source\Delphi\VolumeControl\Win32\Release\VolumeControl.exe run MEDIA_PREV_TRACK MEDIA_TARGET="Spotify.exe"
