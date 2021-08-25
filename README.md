@@ -30,12 +30,12 @@ This can confuse Spotify sometimes...
 ### Media Target
 This can make the media keys a little more reliable by focussing the message on specific processes.  
 
-- VolumeControl.exe run MEDIA_TARGET="Spofify.exe"
+- VolumeControl.exe run MEDIA_TARGET="Spotify.exe"
 
 ### C-C-C-Combo
 Combine parameters for multiple actions:  
 
-- VolumeControl.exe run MEDIA_PLAY_PAUSE MEDIA_TARGET="Spofify.exe"
+- VolumeControl.exe run MEDIA_PLAY_PAUSE MEDIA_TARGET="Spotify.exe"
 
 
 ## /UPX
