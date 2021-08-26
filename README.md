@@ -1,5 +1,6 @@
 # VolumeControl
-Delphi Application to control system volume and media on the local machine.  
+Allows control of system volume and media on the local machine.  
+Application built using Embarcadero Delphi 10.4  
 
 When using a Remote Desktop, media keys are sent to the remote machine and do not affect the local machine.  
 Via another utility on the local machine, such as Corsair iCue or AutoHotKey, we can remap device media keys to run this application instead.  
@@ -42,6 +43,6 @@ Contains bat file to compress release build. Not required.
 Find UPX executable here: https://upx.github.io/
 
 ## Sources
-MMDevAPI soolution from https://codeverge.com/embarcadero.delphi.vcl.using/system-audio-volume/1077006  
+MMDevAPI solution from https://codeverge.com/embarcadero.delphi.vcl.using/system-audio-volume/1077006  
 Icons made by [Vignesh Oviyan](https://www.flaticon.com/authors/vignesh-oviyan) from [www.flaticon.com](https://www.flaticon.com/)  
 
