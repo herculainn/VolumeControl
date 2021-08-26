@@ -21,12 +21,18 @@ var
   MuteValue: Boolean;
   MediaKey: NativeInt;
   MediaTarget: String;
-  pTargetProc: String;
 
 begin
   try
+
+    // Init
+    bUpdateVolume := False;
+    bSendMediaKey := False;
+    bChangeMute := False;
     VolumeLevel := GetVolume;
+    MuteValue := GetMute;
     MediaTarget := '';
+    MediaKey := 0;
 
     // What do we want to do...
 

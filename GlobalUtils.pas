@@ -7,7 +7,7 @@ uses
              
 function IIFS(aCondition: Boolean; aTrue: String; aFalse: String): String;
 function ParseStr(cStr: string; cDelim: char; nIndex: integer): string;
-function GetResPNG(const ResID: String): TPngObject;
+function GetResPNG(const ResID: String): TPngImage;
 procedure SetVolume(aVolume: integer);
 function GetVolume: Integer;
 function GetMute: bool;
@@ -58,9 +58,9 @@ begin
     Result := cCurrent;
 end;
 
-function GetResPNG(const ResID: String): TPngObject;
+function GetResPNG(const ResID: String): TPngImage;
 begin
-  Result := TpngObject.Create;
+  Result := TPngImage.Create;
   try
     Result.LoadFromResourceName(hInstance, ResID);
   except

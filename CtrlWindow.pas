@@ -30,40 +30,34 @@ end;
 
 function GetFirstWindowHandleByPartialTitle(windowtitle: string): TList;
 var
-  h, TopWindow: HWND;
+  h: HWND;
   dWinText: array[0..255] of char;
   i: integer;
   sWinText: string;
-  resList: TList;
 
 begin
-  try
-    resList:= TList.Create;
-    TopWindow:= Application.Handle;
-    i:= 0;
-    while (i < WindowList.Count) do
-    begin
-      try
-        if GetWindowText(HWND(WindowList[i]), dWinText, 255) > 0 then
+  Result:= TList.Create;
+  i:= 0;
+  while (i < WindowList.Count) do
+  begin
+    try
+      if GetWindowText(HWND(WindowList[i]), dWinText, 255) > 0 then
+      begin
+        sWinText := StrPas(dWinText);
+        if length(sWinText) > 0 then
         begin
-          sWinText := StrPas(dWinText);
-          if length(sWinText) > 0 then
+          if (Pos(UpperCase(Windowtitle), UpperCase(sWinText)) >= 1) then
           begin
-            if (Pos(UpperCase(Windowtitle), UpperCase(sWinText)) >= 1) then
-            begin
-              h := HWND(WindowList[i]);
-              if IsWindow(h) then
-                resList.Add(Pointer(WindowList[i]))
-            end
-          end;
+            h := HWND(WindowList[i]);
+            if IsWindow(h) then
+              Result.Add(Pointer(WindowList[i]))
+          end
         end;
-      except
-        ; // Nothing to see here, ahem...
       end;
-      inc(i)
+    except
+      ; // Nothing to see here, ahem...
     end;
-  finally
-    result := resList;
+    inc(i)
   end;
 end;
 
